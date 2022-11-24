@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from PoShopApp import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('signin/', views.signin_page, name='signin_page'),
+    path('login/account/', views.account_page, name='account_page'),
 ]

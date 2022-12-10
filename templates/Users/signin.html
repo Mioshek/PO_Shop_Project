@@ -1,0 +1,37 @@
+{% extends 'Users/base.html' %}
+{% load static %}
+
+{% block body_block %}
+  
+<div class="jumbotron">
+    {% if registered %}
+        <h1>Thank you for registration</h1>
+    {% else %}
+        <h1>Register Here!</h1>
+        <h3>Fill Out The Form:</h3>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ user_basic.as_p}}
+            {{account_type.as_p}}
+            {{user_advanced.as_p}}
+            <script>
+              var returnval = false;
+              ob = document.getElementById('id_account_type');
+              ob.addEventListener('click',function(){
+                if (this.value != 'Customer') 
+                {
+                  console.log(this.value);
+                  document.getElementsByTagName('p')[7].style.visibility = "hidden";
+                  document.getElementsByTagName('p')[8].style.visibility = "hidden";
+                  document.getElementsByTagName('p')[9].style.visibility = "hidden";
+                  document.getElementsByTagName('p')[10].style.visibility = "hidden";
+                  document.getElementsByTagName('p')[11].style.visibility = "hidden";
+                }});
+            </script>
+            <input type="submit" name="" value="Register">
+        </form>
+    {% endif %}
+</div>
+
+{% endblock body_block %} %}

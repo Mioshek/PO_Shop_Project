@@ -21,13 +21,15 @@ class UserAdvancedForm(forms.ModelForm):
     class Meta():
         model = UserProfileInfoModel
         fields = ('first_name',
-                'last_name',
+                'last_name', 
                 'profile_pic',
-                'address_1', 
-                'address_2',
+                'flat_num',
+                'street_number',
+                'street',
                 'city',
-                'region',
-                'zip_code')
+                'zip_code',
+                'phone_number',
+                'country')
 
 
 class UserLogInForm(forms.ModelForm):

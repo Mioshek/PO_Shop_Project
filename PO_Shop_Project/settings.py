@@ -41,9 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'PoShopApp',
-    'Users',
-    'cities_light',
-    'smart_selects',
+    'Users'
 ]
 
 MIDDLEWARE = [

@@ -55,6 +55,9 @@ def user_sign_in(request):
             profile.user = user
             
             user_type = account_type.save()
+            print(user)
+            print(profile)
+            print(user_type)
             
             if 'profile_pic' in request.FILES:
                 profile.profile_pic = request.FILES['profile_pic']

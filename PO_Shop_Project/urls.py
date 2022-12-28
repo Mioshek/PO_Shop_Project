@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from PoShopApp import views
+from django.urls import path, include
+from Users import views
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('signin/', views.signin_page, name='signin_page'),
-    path('login/account/', views.account_page, name='account_page'),
+    path('Shop/', include('PoShopApp.urls')),
+    path('Users/', include('Users.urls')),
+    path('logout/', views.user_logout, name='logout'),
 ]

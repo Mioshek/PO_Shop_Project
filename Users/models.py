@@ -1,39 +1,29 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 # Create your models here.
-
-class AccountType(models.Model):
-    class PossibleAccountTypeChoice(models.TextChoices):
-           CUSTOMER = 'Customer'
-           DELIVERYMAN = 'Deliveryman'
-           DEALER = 'Dealer'
-    account_type = models.CharField(
-           max_length=11,
-           choices=PossibleAccountTypeChoice.choices,
-           default=PossibleAccountTypeChoice.CUSTOMER
-    )
-
 
 class Country(models.Model):
     country = models.CharField(max_length=35, default=None)
     
     def __str__(self) -> str:
          return self.country
-    
-
-
-class UserProfileInfoModel(models.Model, models.TextField):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=32)
-    last_name = models.CharField(max_length=32)
+     
+     
+class Profile(models.Model):
+    user=models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
+    account_type = models.CharField(max_length=50)
     flat_num = models.PositiveIntegerField(blank=True, null=True)
     street_number = models.CharField(max_length=5)
     street = models.CharField(max_length=32)
     city = models.CharField(max_length=32)
     zip_code = models.PositiveIntegerField()
-    phone_number = models.PositiveIntegerField()
-    country = models.ForeignKey(Country ,null=True, on_delete=models.SET_NULL)
+    phone_number = models.PositiveIntegerField(blank=True, unique=True)
+    country = models.ForeignKey(Country ,null=True, on_delete=models.PROTECT)
     
-    def __str__(self) -> str:
-        return self.user.username
+    def get_absolute_url(self):
+        return reverse("signin", kwargs={"pk": self.pk})
+
+    
+    

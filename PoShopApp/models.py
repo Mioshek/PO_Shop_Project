@@ -5,18 +5,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
-class Equipment(models.Model):
-    category_name = models.CharField(max_length=64)
-    brand = models.CharField(max_length=64)
-    
-    def __str__(self) -> str:
-        return self.category_name
-    pass
 
 class Fishing_rod(models.Model): 
-    rod_id = models.ForeignKey(Equipment,
-                                on_delete=models.CASCADE,
-                                related_name='fishing_rods')
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0,
                                         validators=[MinValueValidator(0),
@@ -26,9 +16,6 @@ class Fishing_rod(models.Model):
         return self.name
     
 class Spinning_wheel(models.Model):
-    spinnig_wheel_id = models.ForeignKey(Equipment,
-                                on_delete=models.CASCADE,
-                                related_name='spinning_wheels')
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0,
                                         validators=[MinValueValidator(0),
@@ -37,9 +24,6 @@ class Spinning_wheel(models.Model):
     def __str__(self) -> str:
         return self.name
 class Chair(models.Model):
-    chair_id = models.ForeignKey(Equipment,
-                                on_delete=models.CASCADE,
-                                related_name='chairs')
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0,
                                         validators=[MinValueValidator(0),
@@ -48,9 +32,6 @@ class Chair(models.Model):
     def __str__(self) -> str:
         return self.name
 class Natural_bait(models.Model):
-    bait_id = models.ForeignKey(Equipment,
-                                on_delete=models.CASCADE,
-                                related_name='natural_baits')
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0,
                                         validators=[MinValueValidator(0),
@@ -59,9 +40,6 @@ class Natural_bait(models.Model):
     def __str__(self) -> str:
         return self.name
 class Crankbait(models.Model):
-    crankbait_id = models.ForeignKey(Equipment,
-                                on_delete=models.CASCADE,
-                                related_name='crankbaits')
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0,
                                         validators=[MinValueValidator(0),
@@ -70,9 +48,6 @@ class Crankbait(models.Model):
     def __str__(self) -> str:
         return self.name
 class Twister(models.Model):
-    twister_id = models.ForeignKey(Equipment,
-                                on_delete=models.CASCADE,
-                                related_name='twisters')
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0,
                                         validators=[MinValueValidator(0),
@@ -81,9 +56,6 @@ class Twister(models.Model):
     def __str__(self) -> str:
         return self.name
 class Rubber_bait(models.Model):
-    rubber_bait_id = models.ForeignKey(Equipment,
-                                on_delete=models.CASCADE,
-                                related_name='rubber_baits')
     name = models.CharField(max_length=128)
     price = models.PositiveIntegerField(default=0,
                                         validators=[MinValueValidator(0),
@@ -91,3 +63,23 @@ class Rubber_bait(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+    
+class Equipment(models.Model):
+    class EquipmentCategories(models.TextChoices):
+        FISHING_ROD = Fishing_rod
+        SPINNING_WHEEL = Spinning_wheel
+        CHAIR = Chair
+        NATURAL_BAIT = Natural_bait
+        CRANKBAIT = Crankbait
+        TWISTER = Twister
+        RUBBER_BAIT = Rubber_bait
+        
+    category_name = models.CharField(
+           max_length=50,
+           choices=EquipmentCategories.choices
+    )
+    brand = models.CharField(max_length=64)
+    
+    def __str__(self) -> str:
+        return self.category_name

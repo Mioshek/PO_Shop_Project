@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from .forms import UserBasicForm, UserAdvancedForm, UserAccountTypeForm
+from .forms import UserRegisterForm
 
 #
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+# from django.views.generic import 
 # Create your views here.
 
 def index(request):
@@ -42,39 +43,24 @@ def user_login(request):
 def user_sign_in(request):
     registered:bool = False
     if request.method == 'POST':
-        user_basic = UserBasicForm(data=request.POST)
-        user_advanced = UserAdvancedForm(data=request.POST)
-        account_type = UserAccountTypeForm(data=request.POST)
-        
-        if user_basic.is_valid() and user_advanced.is_valid():
-            user=user_basic.save()
+        user = UserRegisterForm(data=request.POST)
+        if user.is_valid():
+            user=user.save()
             user.set_password(user.password)
             user.save()
             
-            profile = user_advanced.save(commit=False)
-            profile.user = user
-            
-            user_type = account_type.save()
-            print(user)
-            print(profile)
-            print(user_type)
-            
             if 'profile_pic' in request.FILES:
-                profile.profile_pic = request.FILES['profile_pic']
+                user.profile_pic = request.FILES['profile_pic']
                 
-            profile.save()
+            user.save()
             registered = True
             
         else:
-            print(user_basic.errors, user_advanced.errors, account_type.errors)
+            print(user.errors)
             
     else:
-        user_basic = UserBasicForm()
-        user_advanced = UserAdvancedForm()
-        account_type = UserAccountTypeForm()
+        user = UserRegisterForm()
         
     return render(request, 'Users/signin.html',
-                  {'user_basic':user_basic,
-                   'user_advanced':user_advanced,
-                   'account_type':account_type,
+                  {'user':user,
                     'registered': registered})

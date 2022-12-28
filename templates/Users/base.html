@@ -17,11 +17,12 @@
                 {% else %}
                 <li><a class="navbar-brand" href="{% url 'index' %}">Home</a></li>
                 {% endif %}
+                <li><a class="navbar-link" href="{% url 'shop' %}">Shop</a></li>
                 <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li>
-                <li><a class="navbar-link" href="{% url 'signin' %}">Sign In</a></li>
                 {% if user.is_authenticated %}
                 <li><a class="navbar-link" href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
+                <li><a class="navbar-link" href="{% url 'signin' %}">Sign In</a></li>
                 <li><a class="navbar-link" href="{% url 'login' %}">Login</a></li>
                 {% endif %}
 

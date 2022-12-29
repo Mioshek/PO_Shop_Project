@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from Users.models import Profile
 # Create your models here.
 
 
@@ -83,3 +83,18 @@ class Equipment(models.Model):
     
     def __str__(self) -> str:
         return self.category_name
+    
+
+class Order(models.Model):
+    customer = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
+    price = models.PositiveIntegerField()
+    orderdate = timezone.now()
+    approved_order = models.BooleanField(default=False)
+    
+    # def get_absolute_url(self):
+    #     return reverse("model_detail", kwargs={"pk": self.pk})
+    
+    def approve_orders(self):
+        return self.filter(approved_order=True)
+    
+    

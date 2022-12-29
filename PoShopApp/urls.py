@@ -2,6 +2,9 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
+app_name = 'PoShopApp'
+
 urlpatterns = [
-    path('shop/', views.shop, name='shop'),
+    path('shop/', views.show_shop, name='show_shop'),
 ]
+

@@ -1,0 +1,9 @@
+{% extends "base.html" %} 
+{% block body_block %}
+<div class="container">
+  <h1>You are now logged in {{user.username|lower|capfirst}} !</h1>
+  {% comment %} <h2><a href="{% url 'Users:account'%}">Go to Profile</a></h2> {% endcomment %}
+
+</div>
+
+{% endblock %}

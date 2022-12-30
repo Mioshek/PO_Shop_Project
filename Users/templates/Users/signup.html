@@ -1,5 +1,5 @@
-{% extends 'Users/base.html' %}
-{% load static %}    
+{% extends 'base.html' %}
+{% load static %}  
 {% block body_block %} 
      
 <!--Register--> 
@@ -7,7 +7,7 @@
     <h1>Register</h1>
     <form method="POST">
     	{% csrf_token %}
-    	{{ user}}                    
+    	{{ form }}             
     	<button class="btn btn-primary" type="submit" href="{% url 'login' %}">Register</button>
     </form>
     <p class="text-center">If you already have an account, <a href="{% url 'login' %}">login</a> instead.</p>

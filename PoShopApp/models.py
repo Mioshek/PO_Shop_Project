@@ -93,6 +93,8 @@ class Order(models.Model):
     
     # def get_absolute_url(self):
     #     return reverse("model_detail", kwargs={"pk": self.pk})
+    def add_to_cart(self):
+        pass
     
     def approve_orders(self):
         return self.filter(approved_order=True)

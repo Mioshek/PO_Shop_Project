@@ -20,6 +20,12 @@ from .models import (Fishing_rod,Spinning_wheel,
 #     model = Fishing_rod,Spinning_wheel,Chair,Natural_bait,Crankbait,Twister,Rubber_bait
 #     select_related = ("", "price")
     
+@login_required
+def order(request, pk):
+    item = get_object_or_404(Order, pk=pk)
+    item.add_to_cart()
+    return redirect('testshop',pk=pk)    
+    
 def show_shop(request):
     fishing_rod = Fishing_rod.objects.all()
     spinning_wheel = Spinning_wheel.objects.all()

@@ -15,7 +15,7 @@
             <ul class="nav navbar-nav">
                 {% if user.is_authenticated %}
                 <li><a class="navbar-brand" href="{% url 'test'%}" class="btn btn-simple">{{request.user.username}}</a></li>
-                <li><a class="navbar-link" href="{% url 'Shop:show_shop'%}" class="btn btn-simple">Shop</a></li>
+                <li><a class="navbar-link" href="{% url 'Shop:shop_list'%}" class="btn btn-simple">Shop</a></li>
                 <li><a class="navbar-link" href="{% url 'Users:logout' %}" class="btn btn-simple">Logout</a></li>
                 {% else %}
                 <li><a class="navbar-brand" href="{% url 'Users:login' %}" class="btn btn-simple">Home</a></li>

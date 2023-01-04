@@ -3,16 +3,19 @@
 <link rel="stylesheet" type="text/css" href="/home/mioshek/Programming_Stuff/Programming/Python/SoftwareLibraries/Django/PO_Shop_Project/static/css/shop_view.css">
 {% block body_block %}
     {% comment %} <div class="container"> {% endcomment %}
+        {% if user.is_authenticated and user.profile.account_type == "Salesman"%}
+        <a class="btn btn-primary btn-comment" href="{% url 'Shop:equipment_new' %}">Add Item</a>
+        {% endif %}
 
     <div class="parent-flex">
-        {% for item in equipment_list %}
+        {% for equipment in equipment_list %}
             <div class="flex-item">
-                <h4><a href="#"> {{item.name}}</a></h4>
-                <p>Brand: {{item.brand}}</p>
-                <p>Price: {{item.price}} PLN</p>
-                <p>Category: {{ item.category }}</p>
-                </div>
-            </li>
+                <h4><a href="{% url 'Shop:equipment_detail' pk=equipment.pk%}"> {{equipment.name}}</a></h4>
+                <p>Brand: {{equipment.brand}}</p>
+                <p>Price: {{equipment.price}} PLN</p>
+                <p>Category: {{ equipment.category }}</p>
+                <br>
+            </div>
         {% endfor %}
     </div>
 

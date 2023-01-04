@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="/home/mioshek/Programming_Stuff/Programming/Python/SoftwareLibraries/Django/PO_Shop_Project/static/css/shop_view.css">
+{% block body_block %}
+    {% comment %} <div class="container"> {% endcomment %}
+    <div class="parent-flex">
+        {% for order in order_list %}
+            {% if order.customer.username == user.username %}
+                <div class="flex-item">
+                    <h4><a href="{% url 'Shop:order_detail' pk=order.pk%}"> {{order.item.name}}</a></h4>
+                    <p>Brand: {{order.item.brand}}</p>
+                    <p>Price: {{order.item.price}} PLN</p>
+                    <p>Category: {{ order.item.category }}</p>
+                    <br>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% if user.profile.account_type == "Salesman" %}
+        {% for order in order_list %}
+            <h2>{{order.item}}</h2>
+            <h3>{{order.customer.username}}</h3>
+            <form action="post">
+                {% csrf_token %}
+                <input type="submit", class="btn btn-success" value="Approve Order">
+            </form>
+            <br>
+            <br>
+        {% endfor %}
+    {% else %}
+        <h2>Total Price: {{order}} PLN</h2>
+    {% endif %}
+    
+        
+    {% comment %} </div> {% endcomment %}
+{% endblock body_block %}

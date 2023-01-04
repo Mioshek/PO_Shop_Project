@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
-from Users.models import Profile
+from Users.models import User
 # Create your models here.
 
 
@@ -29,29 +29,30 @@ class Equipment(models.Model):
                                         MaxValueValidator(1000)])
     
     def get_absolute_url(self):
-        return reverse("shop_list", kwargs={"pk": self.pk})
+        return reverse("Shop:equipment_detail", kwargs={"pk": self.pk})
     
     def __str__(self) -> str:
         return self.name
     
 
 class Order(models.Model):
-    customer = models.ForeignKey(Profile, null=True, on_delete=models.PROTECT)
-    total_price = models.PositiveIntegerField(null=True)
+    customer = models.ForeignKey(User, null=True, on_delete=models.PROTECT)
     orderdate = models.DateTimeField(blank=True, null=True)
-    approved_order = models.BooleanField(default=False)
-    basket = models.ForeignKey('PoShopApp.Equipment', related_name='basket_items', on_delete=models.CASCADE, null=True)
+    approved_order = models.BooleanField(default=False, blank=True, null=True)
+    item = models.ForeignKey('PoShopApp.Equipment', related_name='basket_items', on_delete=models.CASCADE, null=True)
     
     def get_absolute_url(self):
-        return reverse("shop_list", kwargs={"pk": self.pk})
+        return reverse("Shop:order_detail", kwargs={"pk": self.pk})
     
     def add_to_basket(self):
-        self.total_price = timezone.now()
+        self.save()
     
-    def approve_orders(self):
+    def approve_order(self):
+        self.approved_order = timezone.now()
+        self.approved_order = True
         self.save()
         return self.filter(approved_order=True)
     
     def __str__(self) -> str:
-        return self.customer.user.username
+        return str(self.orderdate) + "  " + self.customer.username
     

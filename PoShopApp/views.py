@@ -18,34 +18,59 @@ from .forms import ShopForm
 # class EquipmentList(SelectRelatedMixin, generic.ListView):
 #     model = Fishing_rod,Spinning_wheel,Chair,Natural_bait,Crankbait,Twister,Rubber_bait
 #     select_related = ("", "price")
+
+#EQUIPMENT SECTION
 class EquipmentListView(ListView):
     model = Equipment
     
     def get_queryset(self):
         return Equipment.objects.order_by('-category')
     
+class EquipmentDetailView(DetailView):
+    model=Equipment
+    
 class CreateEquipmentView(LoginRequiredMixin, CreateView):
     login_url = '/login/'
-    redirect_field_name = 'shop/equipment_detail.html'
-    from_class = ShopForm
+    redirect_field_name = 'Shop/equipment_detail.html'
+    form_class = ShopForm
     model = Equipment
     
 class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
     login_url = '/login/'
-    redirect_field_name = 'shop/equipment_detail.html'
-    from_class = ShopForm
+    redirect_field_name = 'Shop/equipment_detail.html'
+    form_class = ShopForm
     model = Equipment
     
 class EquipmentDeleteView(LoginRequiredMixin, DeleteView):
     model = Equipment
-    success_url = reverse_lazy('equipment_list')
+    success_url = reverse_lazy('Shop:order_list')
+
+#BASKET SECTION
+class BasketListView(ListView):
+    model = Order
     
+    def get_queryset(self):
+        return Order.objects.order_by('-item')
+    
+class BasketDetailView(DetailView):
+    model=Order
+    
+    
+class BasketDeleteView(LoginRequiredMixin, DeleteView):
+    model = Order
+    success_url = reverse_lazy('Shop:order_list')
 
 ## function based views
-   
 @login_required
-def order(request, pk):
+def add_item_to_basket(request, pk):   
+    item = get_object_or_404(Equipment, pk=pk)
+    basket, created = Order.objects.get_or_create(customer=request.user, item=item)
+    basket.add_to_basket()
+    return redirect('Shop:equipment_list')
+
+@login_required
+def approve_order(request, pk):
     item = get_object_or_404(Order, pk=pk)
-    item.add_to_cart()
-    return redirect('testshop',pk=pk)    
+    item.approved_order()
+    return redirect('Shop:equipment_list',pk=pk)    
     

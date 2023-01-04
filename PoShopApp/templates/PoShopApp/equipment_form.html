@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body_block %}
     <h1>New Product</h1>
-    <form class="shop-form" method="POST">
+    <form class="equipment-form" method="POST">
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit" class="save btn btn-default">Save</button>

@@ -20,7 +20,7 @@
                 {% else %}
                 <li><a class="navbar-brand" href="{% url 'Users:login' %}" class="btn btn-simple">Home</a></li>
                 <li><a class="navbar-link" href="{% url 'admin:index' %}">Admin</a></li>
-                <li><a class="navbar-link" href="{% url 'Users:signup' %}" class="btn btn-simple">Sign Up</a></li>
+                <li><a class="navbar-link" href="{% url 'Users:signin' %}" class="btn btn-simple">Sign In</a></li>
                 <li><a class="navbar-link" href="{% url 'Users:login' %}" class="btn btn-simple">Login</a></li>
                 {% endif %}
             </ul>

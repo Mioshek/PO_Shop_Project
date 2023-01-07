@@ -18,6 +18,7 @@ from django.urls import path, include
 from . import views
 
 
+
 urlpatterns = [
     path('', views.HomePage.as_view(), name="home"),
     path('test/', views.TestPage.as_view(), name="test"),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('Shop/', include('PoShopApp.urls', namespace="Shop")),
     path('Users/', include('Users.urls', namespace="Users")),
     path('Users/', include("django.contrib.auth.urls")),
+    path('signin/<int:pk>', views.HomePage.as_view(), name='signin'),
 ]

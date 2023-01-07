@@ -9,7 +9,7 @@
                 <div class="flex-item">
                     <h4><a href="{% url 'Shop:order_detail' pk=order.pk%}"> {{order.item.name}}</a></h4>
                     <p>Brand: {{order.item.brand}}</p>
-                    <p>Price: {{order.item.price}} PLN</p>
+                    <p>Price: <b class="price" id="{{ forloop.counter }}">{{order.item.price}}</b> PLN</p>
                     <p>Category: {{ order.item.category }}</p>
                     <br>
                 </div>
@@ -20,15 +20,27 @@
         {% for order in order_list %}
             <h2>{{order.item}}</h2>
             <h3>{{order.customer.username}}</h3>
-            <form action="post">
+            <form method="POST" action="{% url 'Shop:approve_order' pk=order.pk %}">
                 {% csrf_token %}
-                <input type="submit", class="btn btn-success" value="Approve Order">
+                <button type="submit", class="btn btn-success" value="approve">Approve Order</button>
             </form>
             <br>
             <br>
         {% endfor %}
     {% else %}
-        <h2>Total Price: {{order}} PLN</h2>
+    <script>
+        function get_price(){
+        var all = document.getElementsByClassName("price");
+        var price = 0;
+        for (var i=1, max=all.length +1; i < max; i++){
+            var el = document.getElementById(i).innerHTML;
+            price += parseInt(el);
+
+        }
+        document.getElementById('myh').innerHTML = "Total Price: " +price + "PLN";
+    }
+    </script>
+        <h2 id="myh"> <button type="button" onclick="get_price();">Get Price</button></h2>
     {% endif %}
     
         

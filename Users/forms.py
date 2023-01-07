@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from Users.models import Profile
+from django.contrib.auth.forms import UserChangeForm
 
 ACCOUNT_TYPES=(
     ("1","CUSTOMER"),
@@ -16,7 +17,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta():
         account_type = forms.ChoiceField(choices=ACCOUNT_TYPES)
         model = Profile
-        fields = ("user", "account_type",
+        fields = ("account_type", "profile_pic",
                   "flat_num","street_number",
                   "street","city","zip_code",
                   "phone_number","country")

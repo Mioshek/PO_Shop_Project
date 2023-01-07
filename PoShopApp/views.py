@@ -13,12 +13,7 @@ from django.views import generic
 from .models import (Equipment, Order)
 from .forms import ShopForm
 
-
 # #Create your views here.
-# class EquipmentList(SelectRelatedMixin, generic.ListView):
-#     model = Fishing_rod,Spinning_wheel,Chair,Natural_bait,Crankbait,Twister,Rubber_bait
-#     select_related = ("", "price")
-
 #EQUIPMENT SECTION
 class EquipmentListView(ListView):
     model = Equipment
@@ -71,6 +66,7 @@ def add_item_to_basket(request, pk):
 @login_required
 def approve_order(request, pk):
     item = get_object_or_404(Order, pk=pk)
-    item.approved_order()
-    return redirect('Shop:equipment_list',pk=pk)    
+    item.approved_order = True
+    item.save()
+    return redirect('Shop:equipment_list')    
     

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block body_block %}
+    <h1 class="posttitle loader">{{equipment.name}}</h1>
+    <h2>{{equipment.price}} PLN</h2>
+    {% if user.is_authenticated and user.profile.account_type == "Salesman" %}
+        <a class="btn btn-primary" href="{% url 'Shop:equipment_edit' pk=equipment.pk %}">
+            Edit
+        </a>
+        
+        <a class="btn btn-primary" href="{% url 'Shop:equipment_remove' pk=equipment.pk %}">
+            Remove
+        </a>
+
+    {% else %}
+        <a class="btn btn-primary" href="{% url 'Shop:add_item_to_basket' pk=equipment.pk %}">Add To Basket</a>
+    {% endif %}
+
+    <hr>
+{% comment %} 
+    <a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a>
+
+    <div class="container">
+        <br>
+        {% for comment in post.comments.all %}
+            <br>
+            {% if user.is_authenticated or comment.approved_comment %}
+                {{comment.created_at}}
+                {% if not comment.approved_comment %}
+                <a class="btn btn-primary" href="{% url 'comment_remove' pk=comment.pk %}">Remove</a>
+                <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}">Add</a>
+                {% endif %}
+
+                <p>{{ comment.text|safe|linebreaks }}</p>
+                <p>Posted On: <strong>{{comment.create_date}}</strong> By: <strong>{{comment.author}}</strong></p>
+            {% endif %}
+            {% empty %}
+            <p>No Comments Posted!</p>
+        {% endfor %}
+    </div>  {% endcomment %}
+{% endblock body_block %}

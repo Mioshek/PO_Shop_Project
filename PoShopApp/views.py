@@ -3,42 +3,70 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.generic import (TemplateView, ListView,
                                   DetailView, CreateView,
-                                  UpdateView, DeleteView,)
-
+                                  UpdateView, DeleteView)
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 
 # pip install django-braces
 # from braces.views import SelectRelatedMixin
 # from . import forms
-from .models import (Fishing_rod,Spinning_wheel,
-                      Chair,Natural_bait,Crankbait,
-                      Twister,Rubber_bait, Order)
-
+from .models import (Equipment, Order)
+from .forms import ShopForm
 
 # #Create your views here.
-# class EquipmentList(SelectRelatedMixin, generic.ListView):
-#     model = Fishing_rod,Spinning_wheel,Chair,Natural_bait,Crankbait,Twister,Rubber_bait
-#     select_related = ("", "price")
+#EQUIPMENT SECTION
+class EquipmentListView(ListView):
+    model = Equipment
     
+    def get_queryset(self):
+        return Equipment.objects.order_by('-category')
+    
+class EquipmentDetailView(DetailView):
+    model=Equipment
+    
+class CreateEquipmentView(LoginRequiredMixin, CreateView):
+    login_url = '/login/'
+    redirect_field_name = 'Shop/equipment_detail.html'
+    form_class = ShopForm
+    model = Equipment
+    
+class EquipmentUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = '/login/'
+    redirect_field_name = 'Shop/equipment_detail.html'
+    form_class = ShopForm
+    model = Equipment
+    
+class EquipmentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Equipment
+    success_url = reverse_lazy('Shop:order_list')
+
+#BASKET SECTION
+class BasketListView(ListView):
+    model = Order
+    
+    def get_queryset(self):
+        return Order.objects.order_by('-item')
+    
+class BasketDetailView(DetailView):
+    model=Order
+    
+    
+class BasketDeleteView(LoginRequiredMixin, DeleteView):
+    model = Order
+    success_url = reverse_lazy('Shop:order_list')
+
+## function based views
 @login_required
-def order(request, pk):
+def add_item_to_basket(request, pk):   
+    item = get_object_or_404(Equipment, pk=pk)
+    basket, created = Order.objects.get_or_create(customer=request.user, item=item)
+    basket.add_to_basket()
+    return redirect('Shop:equipment_list')
+
+@login_required
+def approve_order(request, pk):
     item = get_object_or_404(Order, pk=pk)
-    item.add_to_cart()
-    return redirect('testshop',pk=pk)    
-    
-def show_shop(request):
-    fishing_rod = Fishing_rod.objects.all()
-    spinning_wheel = Spinning_wheel.objects.all()
-    chair = Chair.objects.all()
-    natural_bait = Natural_bait.objects.all()
-    crankbait = Crankbait.objects.all()
-    twister = Twister.objects.all()
-    rubber_bait = Rubber_bait.objects.all()
-    return render(request,"PoShopApp/testshop.html", {"fr":fishing_rod,
-                                                   "sw":spinning_wheel,
-                                                   "c":chair,
-                                                   "nb":natural_bait,
-                                                   "cb":crankbait,
-                                                   "t":twister,
-                                                   "rb":rubber_bait})
+    item.approved_order = True
+    item.save()
+    return redirect('Shop:equipment_list')    
     

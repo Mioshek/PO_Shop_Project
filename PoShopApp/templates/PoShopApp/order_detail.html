@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block body_block %}
+    <h1 class="posttitle loader">{{equipment.name}}</h1>
+    <h2>{{equipment.price}} PLN</h2>
+    {% if user.is_authenticated %}
+
+        <a class="btn btn-primary" href="{% url 'Shop:order_remove' pk=order.pk %}">Remove From Basket</a>
+        
+    {% endif %}
+
+    <hr>
+{% endblock body_block %}

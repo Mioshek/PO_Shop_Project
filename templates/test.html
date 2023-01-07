@@ -2,6 +2,8 @@
 {% block body_block %}
 <div class="container">
   <h1>You are now logged in {{user.username|lower|capfirst}} !</h1>
+  <h2>Check <a href="{% url 'Shop:order_list' %}">Basket</a></h2>
+  <h2>Add More Info To Your <a href="{% url 'Users:more_info' pk=user.id %}">Profile</a></h2>
   {% comment %} <h2><a href="{% url 'Users:account'%}">Go to Profile</a></h2> {% endcomment %}
 
 </div>

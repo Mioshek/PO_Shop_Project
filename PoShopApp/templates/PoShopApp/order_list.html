@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="/home/mioshek/Programming_Stuff/Programming/Python/SoftwareLibraries/Django/PO_Shop_Project/static/css/shop_view.css">
+{% block body_block %}
+    {% comment %} <div class="container"> {% endcomment %}
+    <div class="parent-flex">
+        {% for order in order_list %}
+            {% if order.customer.username == user.username %}
+                <div class="flex-item">
+                    <h4><a href="{% url 'Shop:order_detail' pk=order.pk%}"> {{order.item.name}}</a></h4>
+                    <p>Brand: {{order.item.brand}}</p>
+                    <p>Price: <b class="price" id="{{ forloop.counter }}">{{order.item.price}}</b> PLN</p>
+                    <p>Category: {{ order.item.category }}</p>
+                    <br>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% if user.profile.account_type == "Salesman" %}
+        {% for order in order_list %}
+            <h2>{{order.item}}</h2>
+            <h3>{{order.customer.username}}</h3>
+            <form method="POST" action="{% url 'Shop:approve_order' pk=order.pk %}">
+                {% csrf_token %}
+                <button type="submit", class="btn btn-success" value="approve">Approve Order</button>
+            </form>
+            <br>
+            <br>
+        {% endfor %}
+    {% else %}
+    <script>
+        function get_price(){
+        var all = document.getElementsByClassName("price");
+        var price = 0;
+        for (var i=1, max=all.length +1; i < max; i++){
+            var el = document.getElementById(i).innerHTML;
+            price += parseInt(el);
+
+        }
+        document.getElementById('myh').innerHTML = "Total Price: " +price + "PLN";
+    }
+    </script>
+        <h2 id="myh"> <button type="button" onclick="get_price();">Get Price</button></h2>
+    {% endif %}
+    
+        
+    {% comment %} </div> {% endcomment %}
+{% endblock body_block %}
